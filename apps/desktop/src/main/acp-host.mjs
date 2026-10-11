@@ -600,7 +600,9 @@ export async function removeAcpWorkspace(directory, rmImpl = rm) {
   if (typeof directory !== "string" || !directory) return;
   const resolved = path.resolve(directory);
   if (resolved === path.resolve(homedir()) || !resolved.includes(WORKSPACE_MARKER)) return;
-  await rmImpl(resolved, { recursive: true, force: true });
+  // Windows can retain the cwd briefly after the adapter (or its Codex child)
+  // exits. Retry transient locks instead of rejecting a successful handshake.
+  await rmImpl(resolved, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 }
 
 const normalizePromptCapabilities = (initialized) => {
@@ -656,17 +658,33 @@ const createEdgeEverAcpClient = (requestId, emit, allowPermissions) => ({
   },
 });
 
-function stopChild(child) {
-  if (!child) return;
-  const killTimer = setTimeout(() => {
-    if (child.exitCode == null) {
-      try { child.kill("SIGKILL"); } catch { /* already gone */ }
-    }
-  }, 500);
-  killTimer.unref?.();
-  child.once?.("exit", () => clearTimeout(killTimer));
-  try { child.stdin?.destroy(); } catch { /* closed */ }
-  try { child.kill("SIGTERM"); } catch { /* already gone */ }
+const stoppingChildren = new WeakMap();
+
+export function stopAcpChild(child) {
+  if (!child) return Promise.resolve();
+  if (stoppingChildren.has(child)) return stoppingChildren.get(child);
+  if (child.exitCode != null || child.signalCode != null) return Promise.resolve();
+  const stopped = new Promise((resolve) => {
+    const finish = () => {
+      clearTimeout(killTimer);
+      clearTimeout(deadline);
+      child.off("close", finish);
+      resolve();
+    };
+    const killTimer = setTimeout(() => {
+      if (child.exitCode == null && child.signalCode == null) {
+        try { child.kill("SIGKILL"); } catch { /* already gone */ }
+      }
+    }, 500);
+    // A descendant can keep inherited pipes open after the adapter exits.
+    // Bound the wait; removeAcpWorkspace also retries Windows filesystem locks.
+    const deadline = setTimeout(finish, 2_000);
+    child.once("close", finish);
+    try { child.stdin?.destroy(); } catch { /* closed */ }
+    try { child.kill("SIGTERM"); } catch { /* already gone */ }
+  });
+  stoppingChildren.set(child, stopped);
+  return stopped;
 }
 
 const promptFailureMessage = (failure) => {
@@ -728,7 +746,7 @@ export function createAcpHostRuntime(options = {}) {
     let child = null;
     let authMethods = [];
     let authenticationPending = false;
-    const abort = () => stopChild(child);
+    const abort = () => stopAcpChild(child);
     signal?.addEventListener("abort", abort, { once: true });
     try {
       if (signal?.aborted) throw Object.assign(new Error("connection_timeout"), { code: "TIMEOUT" });
@@ -768,8 +786,11 @@ export function createAcpHostRuntime(options = {}) {
     } catch (error) {
       if (authMethods.length && error && typeof error === "object") error.authMethods = authMethods;
       if (authenticationPending && error && typeof error === "object") error.authenticationPending = true;
-      abort();
-      await removeAcpWorkspace(cwd, rmImpl);
+      await abort();
+      // Cleanup must not hide the original authentication/connection failure.
+      await removeAcpWorkspace(cwd, rmImpl).catch((cleanupError) => {
+        console.warn("ACP workspace cleanup failed:", sanitizeFailureDetail(cleanupError));
+      });
       throw error;
     } finally {
       signal?.removeEventListener("abort", abort);
@@ -819,7 +840,7 @@ export function createAcpHostRuntime(options = {}) {
             return { ...adapterShell(id), ...failureFields(classifyAcpFailure(error)), ...(isAuthRequiredError(error) ? { authMethods: error.authMethods ?? [] } : {}) };
           } finally {
             if (connected) {
-              connected.stop();
+              await connected.stop();
               await removeAcpWorkspace(connected.cwd, rmImpl);
             }
           }
@@ -889,7 +910,7 @@ export function createAcpHostRuntime(options = {}) {
         ...(resolved.version ? { version: resolved.version, managed: true } : {}),
       };
       latestStatus.set(id, adapter);
-      connected.stop();
+      await connected.stop();
       await removeAcpWorkspace(connected.cwd, rmImpl);
       return adapter;
     },
@@ -907,7 +928,7 @@ export function createAcpHostRuntime(options = {}) {
           return connect(workBuddyAuth?.command ?? resolved.command, `auth-${id}`, () => {}, signal, input.methodId, [], false, workBuddyAuth);
         }, authenticationTimeoutMs);
         if (id === "workbuddyCn" || id === "workbuddyIntl") {
-          connected.stop();
+          await connected.stop();
           await removeAcpWorkspace(connected.cwd, rmImpl);
           connected = null;
           // Login is useful only if a fresh chat process can restore credentials.
@@ -928,7 +949,7 @@ export function createAcpHostRuntime(options = {}) {
         return adapter;
       } finally {
         if (connected) {
-          connected.stop();
+          await connected.stop();
           await removeAcpWorkspace(connected.cwd, rmImpl);
         }
       }
@@ -1000,7 +1021,7 @@ export function createAcpHostRuntime(options = {}) {
           });
         }
       } catch (error) {
-        connected.stop();
+        await connected.stop();
         await removeAcpWorkspace(connected.cwd, rmImpl);
         await mcpBridge?.close();
         return fail(promptFailureMessage(classifyAcpFailure(error)));
@@ -1017,9 +1038,10 @@ export function createAcpHostRuntime(options = {}) {
         if (session.settled) return;
         session.settled = true;
         notify(event);
-        session.stop();
         active.delete(requestId);
-        void removeAcpWorkspace(session.cwd, rmImpl);
+        void session.stop().then(() => removeAcpWorkspace(session.cwd, rmImpl)).catch((error) => {
+          console.warn("ACP workspace cleanup failed:", sanitizeFailureDetail(error));
+        });
         void session.mcpBridge?.close();
       };
       void connected.connection.prompt({ sessionId: connected.sessionId, prompt: content.blocks }).then((result) => {
@@ -1051,7 +1073,7 @@ export function createAcpHostRuntime(options = {}) {
       } catch {
         // The process may already be gone. Killing it is enough.
       }
-      session.stop();
+      await session.stop();
       void session.mcpBridge?.close();
       return { ok: true };
     },
