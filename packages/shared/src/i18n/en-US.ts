@@ -2432,6 +2432,9 @@ export const enUS = {
       previewBody: "Ideas worth sharing",
       previewQuote: "Keep what matters.",
       themes: {
+        paper: "Paper Memo",
+        press: "Press Journal",
+        highlight: "Social Highlight",
         slate: "Pure White",
         aurora: "Aurora",
         sunset: "Sunset",
@@ -2450,8 +2453,9 @@ export const enUS = {
       fontStyle: "Typography",
       fontStyles: {
         auto: "Follow Theme",
-        sans: "Modern Sans",
+        kai: "Handwritten Kai",
         serif: "Editorial Serif",
+        sans: "Modern Sans",
         mono: "Geek Mono",
       },
       fontSize: "Font Size",

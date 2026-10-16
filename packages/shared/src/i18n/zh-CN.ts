@@ -2430,6 +2430,9 @@ export const zhCN = {
       previewBody: "值得分享的想法",
       previewQuote: "留住重要的事。",
       themes: {
+        paper: "纸间便签",
+        press: "人文报刊",
+        highlight: "社交高光",
         slate: "纯白",
         aurora: "极光渐变",
         sunset: "暮色晚霞",
@@ -2448,8 +2451,9 @@ export const zhCN = {
       fontStyle: "字体风格",
       fontStyles: {
         auto: "跟随主题",
-        sans: "现代无衬线",
+        kai: "文楷手书",
         serif: "文艺衬线",
+        sans: "现代无衬线",
         mono: "极客等宽",
       },
       fontSize: "字号大小",

@@ -2421,6 +2421,9 @@ export const ja = {
       previewBody: "共有したいアイデア",
       previewQuote: "大切なことを残す。",
       themes: {
+        paper: "メモ用紙",
+        press: "新聞・雑誌",
+        highlight: "ハイライト",
         slate: "ピュアホワイト",
         aurora: "オーロラ",
         sunset: "夕焼け",
@@ -2439,8 +2442,9 @@ export const ja = {
       fontStyle: "書体",
       fontStyles: {
         auto: "テーマに合わせる",
-        sans: "モダンゴシック",
+        kai: "手書き・楷書",
         serif: "本文明朝",
+        sans: "モダンゴシック",
         mono: "ギーク等幅",
       },
       fontSize: "文字サイズ",

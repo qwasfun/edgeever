@@ -2421,6 +2421,9 @@ export const pl = {
       previewBody: "Pomysły warte udostępnienia",
       previewQuote: "Zachowaj to, co ważne.",
       themes: {
+        paper: "Notatka papierowa",
+        press: "Prasa i felieton",
+        highlight: "Wyróżnienie",
         slate: "Czysta biel",
         aurora: "Zorza",
         sunset: "Zachód słońca",
@@ -2439,8 +2442,9 @@ export const pl = {
       fontStyle: "Typografia",
       fontStyles: {
         auto: "Zgodnie z motywem",
-        sans: "Nowoczesna bezszeryfowa",
+        kai: "Pismo odręczne / Kaligrafia",
         serif: "Redakcyjna szeryfowa",
+        sans: "Nowoczesna bezszeryfowa",
         mono: "Geekowska o stałej szerokości",
       },
       fontSize: "Rozmiar czcionki",

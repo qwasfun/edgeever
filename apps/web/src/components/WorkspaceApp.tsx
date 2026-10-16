@@ -671,6 +671,7 @@ export const WorkspaceApp = ({
   const notebooksQuery = useQuery({
     queryKey: ["notebooks"],
     queryFn: () => repository.listNotebooks(),
+    networkMode: "offlineFirst",
   });
 
   const templatesQuery = useQuery({
@@ -1069,6 +1070,8 @@ export const WorkspaceApp = ({
     [notebooks, selectedNotebookId, selectedTag, showDescendantNotes]
   );
   const memosQuery = useInfiniteQuery({
+    // Repository reads can resolve from IndexedDB without a network request.
+    networkMode: "offlineFirst",
     queryKey: ["memos", memoView, selectedNotebookId, search, memoFilterMode, memoSortMode, selectedNotebookScopeIds, selectedTag],
     queryFn: ({ pageParam }) => repository.listMemos({
         notebookId: memoView === "notebook" && !selectedTag ? selectedNotebookId : null,
@@ -1165,12 +1168,14 @@ export const WorkspaceApp = ({
   }, [rendererRecoveryMode, selectedMemoId]);
 
   const memoQuery = useQuery({
+    networkMode: "offlineFirst",
     queryKey: detailMemoId ? memoDetailQueryKey(detailMemoId, memoView) : ["memo", detailMemoId, memoView],
     queryFn: () => repository.getMemo(detailMemoId as string, memoView === "trash"),
     enabled: Boolean(detailMemoId),
   });
   const prefetchMemoDetail = useCallback((memoId: string) => {
     void queryClient.prefetchQuery({
+      networkMode: "offlineFirst",
       queryKey: memoDetailQueryKey(memoId, memoView),
       queryFn: () => repository.getMemo(memoId, memoView === "trash"),
     });
