@@ -55,6 +55,7 @@ import {
   AI_SIDEBAR_THREAD_KEY,
   AI_SIDEBAR_WIDTH_KEY,
   cancelDesktopAcp,
+  prepareDesktopAcp,
   promptDesktopAcp,
   readAiSidebarAdapter,
   readAiSidebarSource,
@@ -1054,6 +1055,25 @@ function AiSidebarSession({
   }, [open, busy]);
 
   useEffect(() => {
+    if (!open || source !== "local") return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      if (cancelled || locked.current) return;
+      const adapter = readLocalAdapter();
+      if (!adapter) return;
+      void prepareDesktopAcp({
+        adapterId: adapter.id,
+        ...(adapter.path ? { path: adapter.path } : {}),
+        sessionKey: localThreadId,
+      }).catch(() => undefined);
+    }, 400);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [open, source, localAdapterId, localThreadId]);
+
+  useEffect(() => {
     if (!companionAvailable || source === "local") {
       setLoading(false);
       return;
@@ -1207,7 +1227,9 @@ function AiSidebarSession({
           ...(adapter.path ? { path: adapter.path } : {}),
           prompt: text,
           ...(options?.readOnly ? { noteAccess: false } : {}),
-          ...((noteContext || transcript) ? { contextText: [noteContext, transcript].filter(Boolean).join("\n\n") } : {}),
+          sessionKey: activeLocalThreadId,
+          ...(noteContext ? { contextText: noteContext } : {}),
+          ...(transcript ? { historyText: transcript } : {}),
           ...(snapshot.length ? {
             attachments: snapshot.map((item) => ({
               filename: item.filename,
