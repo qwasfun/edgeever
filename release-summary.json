@@ -1,29 +1,38 @@
 {
-  "version": "2.5.0",
+  "version": "2.9.0",
   "changes": {
     "en-US": [
-      "The web app, the in-app desktop interface, and Android can switch to Russian. A Russian system or browser language selects it when no language has been chosen yet. Text that is not translated yet stays in English, and assistant replies do not follow Russian in this release. Desktop system menus, iOS, and the browser clipper stay as they are. Thanks @Sergmay911 for #668.",
-      "The desktop app can upload images to a remote PicList or PicGo server. In image-host settings, enter the service address and a server key when the server requires one. The address can be a NAS or another computer, and the path stays /upload. Use HTTPS for a remote server. Those images stay on the external host and are left out of EdgeEver backups. The website keeps the built-in image host.",
-      "A startup launch of the desktop app opens the main window. The tray-only option is removed. A saved tray-only preference opens the main window on the next launch.",
-      "Infographic notes use the same assistant session menu as other notes. Past chats can be opened, and a new chat can be started. The graphic being edited stays as its own row in that menu, and its generation history remains on the note.",
-      "When a request already names the diagram subject, the assistant no longer reads the open note. A request to diagram or convert the open note still uses that note.",
-      "The marketing site adds a Showcase page with 17 real-world workflows, linked from the top navigation."
+      "The desktop app can capture the screen into a note from its menu. The shortcut starts unset. After you bind one in shortcut settings, it works from other apps. Press it, drag a region, and release to save a note. Double-click captures the whole screen, and Esc cancels. The shortcut is saved only on this device. The first capture needs screen-recording permission.",
+      "On the web and desktop apps, the Notebooks heading collapses or expands the whole notebook list. Each notebook keeps its own expanded state, and the open note stays open.",
+      "After the document outline is collapsed, the button that opens it again stays beside the editor and no longer scrolls away with the note.",
+      "On macOS, a workspace shortcut bound to Command no longer also fires for Control, so Ctrl+F and Ctrl+N stay available for moving through text. Windows and Linux still use Control. Shortcuts already saved keep the modifier shown on the settings screen.",
+      "On the signed-in devices list, the current device uses a light gray badge. That row’s button is labeled Sign out. Other devices use a trash icon, and hovering it says that device will be signed out.",
+      "On the web, desktop, Android, and iOS apps, newly inserted images and images with no saved width default to the large width (72%). Images that already have a saved width stay as they are.",
+      "New workspaces, and upgrades that still contain only the untouched welcome note, receive the Chinese 功能演示 and English Feature Demos example notebooks. Instances that already contain your own notes stay unchanged, and no manual migration is required.",
+      "Default notebooks that never had their appearance changed return to the shared slate icon. Notebooks with a saved appearance, including one that chose a factory color again, stay as they are. The upgrade clears those untouched factory colors automatically.",
+      "In notebook appearance settings, Reset to default shows a reset icon. The confirm button is dark and labeled Confirm. The note under the title that said changes apply only after saving is gone. The settings still save only after you confirm."
     ],
     "zh-CN": [
-      "Web、桌面端应用内和 Android 可以切换到俄语。系统或浏览器语言是俄语、且还没有手动选过语言时，会自动使用俄语。还没有翻译的文字继续显示英文，助手回复这次仍不跟随俄语。桌面端的系统菜单、iOS 和浏览器剪藏插件这次不变。感谢 @Sergmay911 的贡献（#668）。",
-      "桌面端可以把图片上传到远程 PicList 或 PicGo。在设置的图床里填写服务地址，服务器要求密钥时再填写服务密钥。地址可以是 NAS 或其他电脑，路径保持为 /upload。远程服务请使用 HTTPS。这些图片留在外部图床，不会进入 EdgeEver 备份。网页版仍然使用内置图床。",
-      "桌面端开机启动时会打开主窗口。只留在托盘的选项已经去掉。以前选过只留在托盘的，下次启动会改成打开主窗口。",
-      "信息图笔记和其他笔记使用同一个助手会话菜单，可以打开以往的对话，也可以新开对话。正在编辑的信息图在菜单里单独占一行，它的生成记录仍保存在这篇笔记上。",
-      "让助手画一张已经写明主题的图时，不再读取当前打开的笔记。要求把当前笔记画成图或转换成图时，仍然使用这篇笔记。",
-      "官网新增「真机演示」页面，收录 17 个真实使用场景，可以从顶部导航进入。"
+      "桌面端可以从菜单把屏幕截成笔记。快捷键默认未设置，在快捷键设置里绑定后，其他应用中也能使用。按下后拖拽选择区域，松开即保存为笔记；双击截取整个屏幕，Esc 取消。快捷键只保存在当前设备。第一次截图需要允许屏幕录制。",
+      "网页和桌面端点击「笔记本」标题，可以收起或展开整个笔记本列表。每个笔记本自己的展开状态会保留，当前打开的笔记不会关闭。",
+      "收起文档大纲后，重新展开的按钮会留在编辑区旁边，滚动笔记时不再滑出视野。",
+      "在 macOS 上，绑定了 Command 的工作区快捷键不再同时响应 Control，Ctrl+F 和 Ctrl+N 可以继续用来移动文字。Windows 和 Linux 仍使用 Control。已经保存的快捷键沿用设置页上显示的修饰键。",
+      "登录设备列表里，当前设备改为浅灰色标记。当前这一行的按钮写明「退出当前登录」；其他设备改为垃圾桶图标，悬停时说明会退出该设备。",
+      "网页、桌面、Android 和 iOS 上，新插入的图片以及没有保存过宽度的图片，默认使用较大宽度（72%）。已经保存过宽度的图片保持不变。",
+      "新的工作区，以及升级后仍然只有未改动欢迎笔记的实例，会得到中文「功能演示」和英文 Feature Demos 示例笔记本。已经有自己笔记的实例不会改变，也不需要手动迁移。",
+      "从未改过外观的默认笔记本会回到共用的石板色图标。已经保存过外观的笔记本，包括重新选过出厂颜色的笔记本，保持原样。升级会自动清掉这些未改动的出厂颜色。",
+      "笔记本外观设置里，「恢复默认」带有重置图标，确认按钮改为深色并写明「确认」。标题下「保存后生效」的说明已去掉。仍需确认后才会保存。"
     ],
     "ja": [
-      "Web、デスクトップ版のアプリ内界面、Android でロシア語に切り替えられます。システムまたはブラウザの言語がロシア語で、言語を手動選択していない場合は自動でロシア語になります。未翻訳の文言は英語のままです。アシスタントの返信は今回ロシア語に従いません。デスクトップのシステムメニュー、iOS、ブラウザのクリップ拡張は変わりません。@Sergmay911 の貢献に感謝します（#668）。",
-      "デスクトップ版は、リモートの PicList または PicGo に画像をアップロードできます。図床の設定でサービスアドレスを入力し、サーバーが鍵を求める場合はサービスキーも入力します。アドレスは NAS や別のパソコンでもよく、パスは /upload のままです。リモートのサーバーには HTTPS を使ってください。これらの画像は外部の画像ホストに残り、EdgeEver のバックアップには含まれません。Web 版はこれまでどおり内蔵の画像ホストを使います。",
-      "デスクトップ版をログイン時に起動すると、メインウィンドウが開きます。トレイのみの選択肢はなくなりました。以前トレイのみを保存していた場合も、次回の起動からメインウィンドウが開きます。",
-      "インフォグラフィックのノートでも、他のノートと同じアシスタントのセッションメニューを使えます。過去のチャットを開いたり、新しいチャットを始めたりできます。編集中の図はメニュー内の独立した一行のままで、その生成履歴はこのノートに残ります。",
-      "図にしてほしい主題を依頼の中ですでに指定している場合、アシスタントは開いているノートを読まなくなります。開いているノートを図にする、または図へ変換する依頼では、これまでどおりそのノートを使います。",
-      "紹介サイトに「実機デモ」ページを追加しました。17 の実用例を上部のナビゲーションから開けます。"
+      "デスクトップアプリのメニューから、画面をノートとして保存できます。ショートカットは初期状態では未設定です。ショートカット設定で割り当てると、他のアプリからも使えます。押して範囲をドラッグし、離すとノートになります。ダブルクリックで画面全体、Esc でキャンセルです。ショートカットはこの端末にだけ保存されます。初回は画面収録の許可が必要です。",
+      "ウェブとデスクトップでは、「ノートブック」の見出しで一覧全体を開閉できます。各ノートブックの展開状態は保持され、開いているノートは閉じません。",
+      "ドキュメントアウトラインを閉じたあと、再表示ボタンはエディタの横に残り、ノートをスクロールしても見えなくなりません。",
+      "macOS では、Command に割り当てたワークスペースのショートカットが Control でも発動しなくなりました。Ctrl+F と Ctrl+N は文字の移動に使えます。Windows と Linux は引き続き Control です。保存済みのショートカットは、設定画面に表示されていた修飾キーのままです。",
+      "サインイン中の端末一覧では、現在の端末が薄いグレーの表示になりました。その行のボタンは「サインアウト」です。他の端末はゴミ箱アイコンになり、ホバーでその端末をサインアウトすると分かります。",
+      "ウェブ、デスクトップ、Android、iOS では、新しく挿入した画像と幅が保存されていない画像が、既定で大きい幅（72%）になります。保存済みの幅はそのままです。",
+      "新しいワークスペースと、未編集のようこそノートだけのままアップグレードしたインスタンスには、中国語の「功能演示」と英語の Feature Demos サンプルノートブックが追加されます。自分のノートがすでにあるインスタンスは変わらず、手動の移行も不要です。",
+      "外観を一度も変えていない既定ノートブックは、共通のスレート色アイコンに戻ります。外観を保存済みのノートブックは、初期色を選び直したものも含めてそのままです。アップグレード時に、未変更の初期色は自動で消えます。",
+      "ノートブックの外観設定では、「既定に戻す」にリセットアイコンが付き、確認ボタンは濃い色の「確認」になりました。タイトル下の「保存後に反映されます」という説明はなくなりました。設定は確認するまで保存されません。"
     ]
   }
 }
