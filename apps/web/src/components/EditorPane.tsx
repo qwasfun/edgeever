@@ -168,7 +168,7 @@ import { getMemoUpdateQueueId, isMemoUpdateAlreadyApplied, queueMemoUpdate } fro
 import {
   getMemoSaveConflictInfoFromQueueItem,
 } from "@/lib/memo-save-conflict";
-import { copyTextToClipboard } from "@/lib/clipboard";
+import { copyResourceToClipboard, copyTextToClipboard } from "@/lib/clipboard";
 import { createClientUuid } from "@/lib/client-id";
 import { isLocalMemoId, remapLocalDraftMemoId } from "@/lib/local-mirror";
 import { shouldAcceptRemoteMemoDetail } from "@/lib/memo-detail-freshness";
@@ -566,6 +566,8 @@ const RichEditorPane = ({
   }, [aiAssistantOpen, isLoading, memo?.id]);
   const [phonePreviewOpen, setPhonePreviewOpen] = useState(readEditorPhonePreviewPreference);
   const [memoIdCopyNotice, setMemoIdCopyNotice] = useState<{ status: "copied" | "error"; id: string } | null>(null);
+  const [resourceCopyNotice, setResourceCopyNotice] = useState<"copied" | "error" | null>(null);
+  const resourceCopyNoticeTimerRef = useRef<number | null>(null);
   const handledSaveAndSyncTokenRef = useRef(saveAndSyncToken);
   const handledReadingProtectionToggleTokenRef = useRef(readingProtectionToggleToken);
   const handledEditorModeToggleTokenRef = useRef(editorModeToggleToken);
@@ -3386,31 +3388,31 @@ const RichEditorPane = ({
   }), [attachmentTranscript, dismissAttachmentTranscript, editor?.isEditable, effectiveReadOnly,
     insertAttachmentTranscript, memo?.id, retryAttachmentTranscript, useMarkdownSourceEditor, useMobilePlainTextEditor]);
 
-  const handleResourceSaveAs = useCallback(async (target: ResourceMenuTarget) => {
+  const showResourceCopyNotice = useCallback((status: "copied" | "error") => {
+    if (resourceCopyNoticeTimerRef.current !== null) window.clearTimeout(resourceCopyNoticeTimerRef.current);
+    setResourceCopyNotice(status);
+    resourceCopyNoticeTimerRef.current = window.setTimeout(() => {
+      resourceCopyNoticeTimerRef.current = null;
+      setResourceCopyNotice(null);
+    }, status === "copied" ? 2200 : 3200);
+  }, []);
+
+  useEffect(() => () => {
+    if (resourceCopyNoticeTimerRef.current !== null) window.clearTimeout(resourceCopyNoticeTimerRef.current);
+  }, []);
+
+  const handleResourceCopy = useCallback((target: ResourceMenuTarget) => {
     hideResourceMenu();
     clearResourceActionError();
-    try {
-      const savePicker = (window as Window & {
-        showSaveFilePicker?: (options: { suggestedName: string }) => Promise<{
-          createWritable: () => Promise<WritableStream<Uint8Array>>;
-        }>;
-      }).showSaveFilePicker;
-
-      if (!savePicker) {
-        downloadResourceDirectly(target);
-        return;
-      }
-
-      const handle = await savePicker.call(window, { suggestedName: target.filename });
-      const response = await fetchResourceResponse(target);
-      if (!response.body) throw new Error(getResourceActionFailure(target));
-      const writable = await handle.createWritable();
-      await response.body.pipeTo(writable);
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") return;
-      failResourceAction(error instanceof Error ? error.message : getResourceActionFailure(target));
-    }
-  }, [clearResourceActionError, downloadResourceDirectly, failResourceAction, fetchResourceResponse, getResourceActionFailure, hideResourceMenu]);
+    // Start the clipboard write in this turn so Safari still has the click gesture.
+    void copyResourceToClipboard({
+      filename: target.filename,
+      asImage: target.kind === "image",
+      load: () => fetchResourceResponse(target),
+    }).then((copied) => {
+      showResourceCopyNotice(copied ? "copied" : "error");
+    });
+  }, [clearResourceActionError, fetchResourceResponse, hideResourceMenu, showResourceCopyNotice]);
 
   const openResourceDialog = useCallback((action: ResourceDialogState["action"], target: ResourceMenuTarget) => {
     openResourceActionDialog(action, target);
@@ -3874,7 +3876,7 @@ const RichEditorPane = ({
 
   const resourceMenuLabels = {
     download: t("editor.resourceActions.download"),
-    saveAs: t("editor.resourceActions.saveAs"),
+    copy: t("editor.resourceActions.copy"),
     transcribe: t("editor.resourceActions.transcribe"),
     rename: t("editor.resourceActions.rename"),
     delete: t("editor.resourceActions.delete"),
@@ -4668,7 +4670,7 @@ const RichEditorPane = ({
           )}
           labels={resourceMenuLabels}
           onDownload={() => void handleResourceDownload(resourceMenuTarget)}
-          onSaveAs={() => void handleResourceSaveAs(resourceMenuTarget)}
+          onCopy={() => handleResourceCopy(resourceMenuTarget)}
           onTranscribe={() => void handleResourceTranscribe(resourceMenuTarget)}
           onRename={() => openResourceDialog("rename", resourceMenuTarget)}
           onDelete={() => openResourceDialog("delete", resourceMenuTarget)}
@@ -4692,6 +4694,12 @@ const RichEditorPane = ({
       {memoIdCopyNotice && (
         <ClipboardCopyNotice status={memoIdCopyNotice.status}>
           {t(memoIdCopyNotice.status === "copied" ? "editor.noteIdCopied" : "editor.noteIdCopyFailed", { id: memoIdCopyNotice.id })}
+        </ClipboardCopyNotice>
+      )}
+
+      {resourceCopyNotice && (
+        <ClipboardCopyNotice status={resourceCopyNotice}>
+          {t(resourceCopyNotice === "copied" ? "editor.resourceActions.copied" : "editor.resourceActions.copyFailed")}
         </ClipboardCopyNotice>
       )}
 

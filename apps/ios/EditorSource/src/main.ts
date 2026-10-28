@@ -1452,6 +1452,12 @@ const api: EdgeEverEditorAPI = {
     // Configuring a reused WebView is not a document edit. TipTap otherwise emits
     // an update for its old (often empty) body before native pushes the share seed.
     editor.setEditable(mode === "editor", false);
+    if (modeChanged) {
+      // Without that update event, node views that hide editing controls (the image
+      // gallery toolbar) keep their old state. A no-op transaction refreshes them
+      // without recording history or triggering a save.
+      editor.view.dispatch(editor.state.tr.setMeta("addToHistory", false).setMeta("preventUpdate", true));
+    }
     setToolbarVisible(mode === "editor");
     document.documentElement.dataset.theme = opts.theme || "light";
     document.body.classList.toggle("viewer-mode", mode === "viewer");

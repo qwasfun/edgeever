@@ -1,38 +1,35 @@
 {
-  "version": "2.9.0",
+  "version": "2.11.0",
   "changes": {
     "en-US": [
-      "The desktop app can capture the screen into a note from its menu. The shortcut starts unset. After you bind one in shortcut settings, it works from other apps. Press it, drag a region, and release to save a note. Double-click captures the whole screen, and Esc cancels. The shortcut is saved only on this device. The first capture needs screen-recording permission.",
-      "On the web and desktop apps, the Notebooks heading collapses or expands the whole notebook list. Each notebook keeps its own expanded state, and the open note stays open.",
-      "After the document outline is collapsed, the button that opens it again stays beside the editor and no longer scrolls away with the note.",
-      "On macOS, a workspace shortcut bound to Command no longer also fires for Control, so Ctrl+F and Ctrl+N stay available for moving through text. Windows and Linux still use Control. Shortcuts already saved keep the modifier shown on the settings screen.",
-      "On the signed-in devices list, the current device uses a light gray badge. That row’s button is labeled Sign out. Other devices use a trash icon, and hovering it says that device will be signed out.",
-      "On the web, desktop, Android, and iOS apps, newly inserted images and images with no saved width default to the large width (72%). Images that already have a saved width stay as they are.",
-      "New workspaces, and upgrades that still contain only the untouched welcome note, receive the Chinese 功能演示 and English Feature Demos example notebooks. Instances that already contain your own notes stay unchanged, and no manual migration is required.",
-      "Default notebooks that never had their appearance changed return to the shared slate icon. Notebooks with a saved appearance, including one that chose a factory color again, stay as they are. The upgrade clears those untouched factory colors automatically.",
-      "In notebook appearance settings, Reset to default shows a reset icon. The confirm button is dark and labeled Confirm. The note under the title that said changes apply only after saving is gone. The settings still save only after you confirm."
+      "Desktop adds scheduled local backups, optional password encryption, recovery, and backup file management (#650; @sivdead, #684).",
+      "Single-note shares support readable custom addresses, with share actions wrapping on narrow windows (#691; @dkoryto, #692, #695).",
+      "Public share pages include note text directly and support Markdown access for readers and tools.",
+      "Android fullscreen image previews support swiping between images and avoid flashing the previous image (@CottonChou, #687).",
+      "Improve Android translations across the editor, AI assistant, settings, and update prompts (@dkoryto, #603).",
+      "Copy images and attachments directly from their editor menus.",
+      "System fonts follow the operating system locale for Han glyphs, improving Japanese and other text (#686).",
+      "Hide the image gallery editing toolbar in iOS view mode (@dkoryto, #689)."
     ],
     "zh-CN": [
-      "桌面端可以从菜单把屏幕截成笔记。快捷键默认未设置，在快捷键设置里绑定后，其他应用中也能使用。按下后拖拽选择区域，松开即保存为笔记；双击截取整个屏幕，Esc 取消。快捷键只保存在当前设备。第一次截图需要允许屏幕录制。",
-      "网页和桌面端点击「笔记本」标题，可以收起或展开整个笔记本列表。每个笔记本自己的展开状态会保留，当前打开的笔记不会关闭。",
-      "收起文档大纲后，重新展开的按钮会留在编辑区旁边，滚动笔记时不再滑出视野。",
-      "在 macOS 上，绑定了 Command 的工作区快捷键不再同时响应 Control，Ctrl+F 和 Ctrl+N 可以继续用来移动文字。Windows 和 Linux 仍使用 Control。已经保存的快捷键沿用设置页上显示的修饰键。",
-      "登录设备列表里，当前设备改为浅灰色标记。当前这一行的按钮写明「退出当前登录」；其他设备改为垃圾桶图标，悬停时说明会退出该设备。",
-      "网页、桌面、Android 和 iOS 上，新插入的图片以及没有保存过宽度的图片，默认使用较大宽度（72%）。已经保存过宽度的图片保持不变。",
-      "新的工作区，以及升级后仍然只有未改动欢迎笔记的实例，会得到中文「功能演示」和英文 Feature Demos 示例笔记本。已经有自己笔记的实例不会改变，也不需要手动迁移。",
-      "从未改过外观的默认笔记本会回到共用的石板色图标。已经保存过外观的笔记本，包括重新选过出厂颜色的笔记本，保持原样。升级会自动清掉这些未改动的出厂颜色。",
-      "笔记本外观设置里，「恢复默认」带有重置图标，确认按钮改为深色并写明「确认」。标题下「保存后生效」的说明已去掉。仍需确认后才会保存。"
+      "桌面端新增定时本地备份、可选密码加密与恢复，支持查看和管理备份文件（#650；@sivdead，#684）。",
+      "单篇笔记分享支持自定义易读地址，窄窗口下分享操作自动换行（#691；@dkoryto，#692、#695）。",
+      "公开分享页面直接提供笔记正文，并支持以 Markdown 读取，便于阅读和工具访问。",
+      "Android 全屏图片预览支持左右滑动切换，并修复切换时旧图片闪现（@CottonChou，#687）。",
+      "完善 Android 编辑器、AI 助手、设置与更新提示的多语言显示（@dkoryto，#603）。",
+      "编辑器图片和附件菜单新增复制功能，可直接复制内容或文件。",
+      "系统字体遵循操作系统语言选择汉字字形，改善日文等语言的显示（#686）。",
+      "修复 iOS 只读模式仍显示图片相册编辑工具栏的问题（@dkoryto，#689）。"
     ],
     "ja": [
-      "デスクトップアプリのメニューから、画面をノートとして保存できます。ショートカットは初期状態では未設定です。ショートカット設定で割り当てると、他のアプリからも使えます。押して範囲をドラッグし、離すとノートになります。ダブルクリックで画面全体、Esc でキャンセルです。ショートカットはこの端末にだけ保存されます。初回は画面収録の許可が必要です。",
-      "ウェブとデスクトップでは、「ノートブック」の見出しで一覧全体を開閉できます。各ノートブックの展開状態は保持され、開いているノートは閉じません。",
-      "ドキュメントアウトラインを閉じたあと、再表示ボタンはエディタの横に残り、ノートをスクロールしても見えなくなりません。",
-      "macOS では、Command に割り当てたワークスペースのショートカットが Control でも発動しなくなりました。Ctrl+F と Ctrl+N は文字の移動に使えます。Windows と Linux は引き続き Control です。保存済みのショートカットは、設定画面に表示されていた修飾キーのままです。",
-      "サインイン中の端末一覧では、現在の端末が薄いグレーの表示になりました。その行のボタンは「サインアウト」です。他の端末はゴミ箱アイコンになり、ホバーでその端末をサインアウトすると分かります。",
-      "ウェブ、デスクトップ、Android、iOS では、新しく挿入した画像と幅が保存されていない画像が、既定で大きい幅（72%）になります。保存済みの幅はそのままです。",
-      "新しいワークスペースと、未編集のようこそノートだけのままアップグレードしたインスタンスには、中国語の「功能演示」と英語の Feature Demos サンプルノートブックが追加されます。自分のノートがすでにあるインスタンスは変わらず、手動の移行も不要です。",
-      "外観を一度も変えていない既定ノートブックは、共通のスレート色アイコンに戻ります。外観を保存済みのノートブックは、初期色を選び直したものも含めてそのままです。アップグレード時に、未変更の初期色は自動で消えます。",
-      "ノートブックの外観設定では、「既定に戻す」にリセットアイコンが付き、確認ボタンは濃い色の「確認」になりました。タイトル下の「保存後に反映されます」という説明はなくなりました。設定は確認するまで保存されません。"
+      "デスクトップに定期ローカルバックアップ、任意のパスワード暗号化、復元とバックアップ管理を追加しました。",
+      "単一ノートの共有リンクにカスタムアドレスを設定でき、狭い画面でも共有操作を利用しやすくなりました。",
+      "公開共有ページにノート本文を直接含め、Markdownでの取得にも対応しました。",
+      "Androidの全画面画像プレビューで左右スワイプによる切り替えに対応し、直前の画像がちらつく問題を修正しました。",
+      "Androidのエディター、AIアシスタント、設定、更新通知の多言語表示を改善しました。",
+      "エディター内の画像や添付ファイルのメニューから直接コピーできるようになりました。",
+      "システムフォントの漢字字形をOSの言語設定に合わせ、日本語などの表示を改善しました。",
+      "iOSの閲覧モードで画像ギャラリーの編集ツールバーが表示される問題を修正しました。"
     ]
   }
 }
