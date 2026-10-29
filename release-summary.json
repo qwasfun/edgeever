@@ -1,35 +1,35 @@
 {
-  "version": "2.11.0",
+  "version": "2.13.0",
   "changes": {
     "en-US": [
-      "Desktop adds scheduled local backups, optional password encryption, recovery, and backup file management (#650; @sivdead, #684).",
-      "Single-note shares support readable custom addresses, with share actions wrapping on narrow windows (#691; @dkoryto, #692, #695).",
-      "Public share pages include note text directly and support Markdown access for readers and tools.",
-      "Android fullscreen image previews support swiping between images and avoid flashing the previous image (@CottonChou, #687).",
-      "Improve Android translations across the editor, AI assistant, settings, and update prompts (@dkoryto, #603).",
-      "Copy images and attachments directly from their editor menus.",
-      "System fonts follow the operating system locale for Han glyphs, improving Japanese and other text (#686).",
-      "Hide the image gallery editing toolbar in iOS view mode (@dkoryto, #689)."
+      "Insert chemical formulas and equations, and continue typing naturally after inserting or editing formulas. (#717, #719; @dkoryto, #718, #720)",
+      "Download share QR codes as PNG or SVG, with consistent PNG image dimensions. (#714; @dkoryto, #716)",
+      "Improve attachment restore and shared-resource security to prevent malicious restored content from executing scripts. (#701; @sivdead, #711)",
+      "Fix notes and nested notebooks remaining queued when their parent notebook has not synced yet. (#712)",
+      "Fix Mermaid diagrams with HTML labels in the enlarged viewer and preserve compact subgraph layouts. (#704)",
+      "Preserve the drop position while images upload, remove empty galleries after deleting all images, and refine image controls. (#707, #709)",
+      "Keep single tildes in text such as 1~2~3 instead of rendering accidental strikethrough. (#698)",
+      "Keep the Simplified Chinese default title out of untitled shared pages and link previews. (#713; @dkoryto, #715)"
     ],
     "zh-CN": [
-      "桌面端新增定时本地备份、可选密码加密与恢复，支持查看和管理备份文件（#650；@sivdead，#684）。",
-      "单篇笔记分享支持自定义易读地址，窄窗口下分享操作自动换行（#691；@dkoryto，#692、#695）。",
-      "公开分享页面直接提供笔记正文，并支持以 Markdown 读取，便于阅读和工具访问。",
-      "Android 全屏图片预览支持左右滑动切换，并修复切换时旧图片闪现（@CottonChou，#687）。",
-      "完善 Android 编辑器、AI 助手、设置与更新提示的多语言显示（@dkoryto，#603）。",
-      "编辑器图片和附件菜单新增复制功能，可直接复制内容或文件。",
-      "系统字体遵循操作系统语言选择汉字字形，改善日文等语言的显示（#686）。",
-      "修复 iOS 只读模式仍显示图片相册编辑工具栏的问题（@dkoryto，#689）。"
+      "支持插入化学式与化学方程式，插入或编辑公式后可顺畅继续输入。（#717、#719；@dkoryto，#718、#720）",
+      "支持将分享二维码下载为 PNG 或 SVG，PNG 图片尺寸保持一致。（#714；@dkoryto，#716）",
+      "加强附件恢复与共享资源安全校验，防止恶意恢复内容执行脚本。（#701；@sivdead，#711）",
+      "修复父笔记本尚未同步时，笔记及子笔记本持续卡在同步队列的问题。（#712）",
+      "修复含 HTML 标签的 Mermaid 图表无法放大查看的问题，并改善紧凑子图布局。（#704）",
+      "图片上传期间保留拖放插入位置，删除全部图片后移除空图库，并统一图片控件的视觉样式。（#707、#709）",
+      "保留 1~2~3 等文本中的单波浪线，避免误显示为删除线。（#698）",
+      "修复无标题分享页面及链接预览中出现简体中文默认标题的问题。（#713；@dkoryto，#715）"
     ],
     "ja": [
-      "デスクトップに定期ローカルバックアップ、任意のパスワード暗号化、復元とバックアップ管理を追加しました。",
-      "単一ノートの共有リンクにカスタムアドレスを設定でき、狭い画面でも共有操作を利用しやすくなりました。",
-      "公開共有ページにノート本文を直接含め、Markdownでの取得にも対応しました。",
-      "Androidの全画面画像プレビューで左右スワイプによる切り替えに対応し、直前の画像がちらつく問題を修正しました。",
-      "Androidのエディター、AIアシスタント、設定、更新通知の多言語表示を改善しました。",
-      "エディター内の画像や添付ファイルのメニューから直接コピーできるようになりました。",
-      "システムフォントの漢字字形をOSの言語設定に合わせ、日本語などの表示を改善しました。",
-      "iOSの閲覧モードで画像ギャラリーの編集ツールバーが表示される問題を修正しました。"
+      "化学式と化学反応式を挿入でき、数式の挿入・編集後も自然に入力を続けられます。",
+      "共有QRコードをPNGまたはSVGで保存でき、PNGの画像サイズも統一されます。",
+      "添付ファイルの復元と共有リソースの安全性を強化し、不正な復元コンテンツによるスクリプト実行を防ぎます。",
+      "親ノートブックの同期前に作成したノートや子ノートブックが同期待ちのままになる問題を修正します。",
+      "HTMLラベルを含むMermaid図の拡大表示を修正し、サブグラフのコンパクトな配置を改善します。",
+      "画像アップロード中のドロップ位置を保持し、全画像削除後の空ギャラリーを除去して、画像操作の表示を整えます。",
+      "1~2~3のような単一チルダを含む文章が誤って取り消し線になる問題を修正します。",
+      "無題の共有ページやリンクプレビューに簡体字中国語の既定タイトルが表示される問題を修正します。"
     ]
   }
 }

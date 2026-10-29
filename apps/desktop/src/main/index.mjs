@@ -4,6 +4,7 @@ import { appendFile, mkdir, open, readdir, readFile, rename, rm, stat, unlink, w
 import { basename, join } from "node:path";
 import { Readable } from "node:stream";
 import { execFile, spawn } from "node:child_process";
+import { backgroundNodeExecutable } from "./background-node.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { release as operatingSystemRelease } from "node:os";
 import { BackupManager } from "./backup-manager.mjs";
@@ -2025,6 +2026,8 @@ const startApplication = async () => {
     if (event.sender === mainWindow?.webContents && event.senderFrame === event.sender.mainFrame && typeof requestId === "string") aiDirect.cancel(requestId);
   });
   const acpRuntime = registerAcpIpc(ipcMain, createAcpHostRuntime({
+    executablePath: backgroundNodeExecutable(process.execPath),
+    mcpExecutablePath: backgroundNodeExecutable(process.execPath),
     adapterStore: join(app.getPath("userData"), "acp-adapters"),
     adapterFetchImpl: (url, init) => net.fetch(url, { ...init, credentials: "omit" }),
     onUpdateDiagnostic: (details) => { void writeDiagnostic("acp.adapter-update-failed", details); },
