@@ -1,35 +1,26 @@
 {
-  "version": "2.13.0",
+  "version": "2.15.0",
   "changes": {
     "en-US": [
-      "Insert chemical formulas and equations, and continue typing naturally after inserting or editing formulas. (#717, #719; @dkoryto, #718, #720)",
-      "Download share QR codes as PNG or SVG, with consistent PNG image dimensions. (#714; @dkoryto, #716)",
-      "Improve attachment restore and shared-resource security to prevent malicious restored content from executing scripts. (#701; @sivdead, #711)",
-      "Fix notes and nested notebooks remaining queued when their parent notebook has not synced yet. (#712)",
-      "Fix Mermaid diagrams with HTML labels in the enlarged viewer and preserve compact subgraph layouts. (#704)",
-      "Preserve the drop position while images upload, remove empty galleries after deleting all images, and refine image controls. (#707, #709)",
-      "Keep single tildes in text such as 1~2~3 instead of rendering accidental strikethrough. (#698)",
-      "Keep the Simplified Chinese default title out of untitled shared pages and link previews. (#713; @dkoryto, #715)"
+      "Access and copy the raw Markdown link directly from the note sharing dialog.",
+      "Preserve the full remaining image when moving or deleting an image leaves a gallery with one image. (#728)",
+      "Use more of the available writing space around the floating AI launcher.",
+      "Make shortcut settings easier to scan with a consistent layout and clearer controls.",
+      "Show the latest desktop backup size and improve backup history size formatting."
     ],
     "zh-CN": [
-      "支持插入化学式与化学方程式，插入或编辑公式后可顺畅继续输入。（#717、#719；@dkoryto，#718、#720）",
-      "支持将分享二维码下载为 PNG 或 SVG，PNG 图片尺寸保持一致。（#714；@dkoryto，#716）",
-      "加强附件恢复与共享资源安全校验，防止恶意恢复内容执行脚本。（#701；@sivdead，#711）",
-      "修复父笔记本尚未同步时，笔记及子笔记本持续卡在同步队列的问题。（#712）",
-      "修复含 HTML 标签的 Mermaid 图表无法放大查看的问题，并改善紧凑子图布局。（#704）",
-      "图片上传期间保留拖放插入位置，删除全部图片后移除空图库，并统一图片控件的视觉样式。（#707、#709）",
-      "保留 1~2~3 等文本中的单波浪线，避免误显示为删除线。（#698）",
-      "修复无标题分享页面及链接预览中出现简体中文默认标题的问题。（#713；@dkoryto，#715）"
+      "在笔记分享弹窗中直接查看并复制 Markdown 原文链接。",
+      "图库在移动或删除图片后仅剩一张时，完整显示剩余图片，避免上下裁切。（#728）",
+      "减少浮动 AI 入口周围的留白，提供更宽敞的笔记编辑空间。",
+      "统一快捷键设置布局并简化分组标题，让设置与操作更清晰。",
+      "显示桌面端最近一次备份的大小，并改善备份历史中的大小显示。"
     ],
     "ja": [
-      "化学式と化学反応式を挿入でき、数式の挿入・編集後も自然に入力を続けられます。",
-      "共有QRコードをPNGまたはSVGで保存でき、PNGの画像サイズも統一されます。",
-      "添付ファイルの復元と共有リソースの安全性を強化し、不正な復元コンテンツによるスクリプト実行を防ぎます。",
-      "親ノートブックの同期前に作成したノートや子ノートブックが同期待ちのままになる問題を修正します。",
-      "HTMLラベルを含むMermaid図の拡大表示を修正し、サブグラフのコンパクトな配置を改善します。",
-      "画像アップロード中のドロップ位置を保持し、全画像削除後の空ギャラリーを除去して、画像操作の表示を整えます。",
-      "1~2~3のような単一チルダを含む文章が誤って取り消し線になる問題を修正します。",
-      "無題の共有ページやリンクプレビューに簡体字中国語の既定タイトルが表示される問題を修正します。"
+      "ノートの共有ダイアログからMarkdown原文のリンクを直接確認・コピーできます。",
+      "ギャラリー内の画像を移動・削除して1枚だけになった際、残った画像が上下に切り取られず全体を表示するよう修正します。",
+      "フローティングAIボタン周辺の余白を減らし、ノートの編集スペースを広げます。",
+      "ショートカット設定のレイアウトを統一し、見出しと操作を分かりやすくします。",
+      "デスクトップの最新バックアップのサイズを表示し、履歴のサイズ表記を改善します。"
     ]
   }
 }

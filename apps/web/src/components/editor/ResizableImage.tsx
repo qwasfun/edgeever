@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { isImageInGallery } from "./image-editing-context";
 import { createImageSelectionPlugin, imageSelectionKey } from "./image-selection";
+import { createImageDragPlugin } from "./image-drag";
 
 export type ImageMenuRequestDetail = {
   element: HTMLElement;
@@ -292,7 +293,8 @@ const ResizableImageNodeView = ({
         ref={imageRef}
         src={src}
         alt={alt}
-        draggable={false}
+        draggable={editable}
+        data-drag-handle={editable ? "" : undefined}
         referrerPolicy={getImageReferrerPolicy(src)}
         onClick={(event) => {
           // A positioned figure does not occupy the full block wrapper. Select
@@ -391,7 +393,7 @@ const ResizableImageNodeView = ({
 
 export const ResizableImage = Image.extend({
   addProseMirrorPlugins() {
-    return [...(this.parent?.() ?? []), createImageSelectionPlugin()];
+    return [...(this.parent?.() ?? []), createImageSelectionPlugin(), createImageDragPlugin()];
   },
   addPasteRules() {
     return [createMarkdownImagePasteRule(this.type)];
