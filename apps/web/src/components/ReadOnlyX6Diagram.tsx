@@ -12,7 +12,6 @@ import {
   mindMapConnector,
   type DiagramDocument,
 } from "@edgeever/shared";
-import type { SupportedLocale } from "@edgeever/shared/i18n/locales";
 
 Graph.registerConnector(MIND_MAP_CONNECTOR_NAME, mindMapConnector, true);
 
@@ -23,7 +22,7 @@ export const ReadOnlyX6Diagram = ({
   controls = false,
 }: {
   diagram: DiagramDocument;
-  locale: SupportedLocale;
+  locale: "zh-CN" | "en-US" | "ja" | "pl" | "ru";
   theme: "light" | "dark";
   controls?: boolean;
 }) => {

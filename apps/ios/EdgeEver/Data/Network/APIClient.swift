@@ -303,17 +303,8 @@ actor APIClient {
         return AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    // This client can run a long task in parts or continue a cut-off result (#652 PR B).
-                    var first = input
-                    first.segmentation = AiSegmentationRequest()
-                    let prepared: AiPreparedGeneration = try await self.request(path: "/api/v1/ai/generate/prepare", method: "POST", body: first)
-                    try await AiLongGeneration.run(
-                        input: input,
-                        first: prepared,
-                        prepare: { next in try await self.request(path: "/api/v1/ai/generate/prepare", method: "POST", body: next) },
-                        stream: { next, emit in try await Self.streamDirectProvider(next, session: session, emit: emit) },
-                        emit: { event in continuation.yield(event) }
-                    )
+                    let prepared: AiPreparedGeneration = try await self.request(path: "/api/v1/ai/generate/prepare", method: "POST", body: input)
+                    try await Self.streamDirectProvider(prepared, session: session, continuation: continuation)
                     continuation.finish()
                 } catch { continuation.finish(throwing: error) }
             }
@@ -324,7 +315,7 @@ actor APIClient {
     private static func streamDirectProvider(
         _ prepared: AiPreparedGeneration,
         session: URLSession,
-        emit: @Sendable (AiStreamEvent) -> Void
+        continuation: AsyncThrowingStream<AiStreamEvent, Error>.Continuation
     ) async throws {
         let request = try AiDirectStream.providerRequest(for: prepared)
         let (bytes, response) = try await session.bytes(for: request)
@@ -337,7 +328,7 @@ actor APIClient {
             let raw = String(data: data, encoding: .utf8) ?? HTTPURLResponse.localizedString(forStatusCode: http.statusCode)
             throw APIError(status: http.statusCode, code: "ai_generation_failed", message: String(raw.prefix(1000)))
         }
-        emit(AiStreamEvent(type: "start", text: nil, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
+        continuation.yield(AiStreamEvent(type: "start", text: nil, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
         let normalizer = AiGenerationStreamNormalizer(resultBoundary: prepared.resultBoundary)
         var hasContent = false
         var finishReason: String?
@@ -357,22 +348,22 @@ actor APIClient {
             let text = normalizer.push(delta.text)
             if text.isEmpty { continue }
             hasContent = hasContent || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            emit(AiStreamEvent(type: "text-delta", text: text, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
+            continuation.yield(AiStreamEvent(type: "text-delta", text: text, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
         }
         let trailing = normalizer.finish()
         if !trailing.isEmpty {
             hasContent = hasContent || !trailing.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            emit(AiStreamEvent(type: "text-delta", text: trailing, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
+            continuation.yield(AiStreamEvent(type: "text-delta", text: trailing, code: nil, message: nil, finishReason: nil, inputTokens: nil, outputTokens: nil))
         }
         if !hasContent {
-            emit(AiStreamEvent(type: "error", text: nil, code: "ai_generation_failed", message: "The AI did not return a note result.", finishReason: nil, inputTokens: nil, outputTokens: nil))
+            continuation.yield(AiStreamEvent(type: "error", text: nil, code: "ai_generation_failed", message: "The AI did not return a note result.", finishReason: nil, inputTokens: nil, outputTokens: nil))
             return
         }
         switch AiDirectStream.streamEnd(finishReason: finishReason, normalizer: normalizer) {
         case .interrupted:
-            emit(AiStreamEvent(type: "error", text: nil, code: "ai_stream_interrupted", message: "The connection ended before the AI finished.", finishReason: nil, inputTokens: nil, outputTokens: nil))
+            continuation.yield(AiStreamEvent(type: "error", text: nil, code: "ai_stream_interrupted", message: "The connection ended before the AI finished.", finishReason: nil, inputTokens: nil, outputTokens: nil))
         case .finished(let truncated):
-            emit(AiStreamEvent(type: "finish", text: nil, code: nil, message: nil, finishReason: finishReason, inputTokens: inputTokens, outputTokens: outputTokens, truncated: truncated))
+            continuation.yield(AiStreamEvent(type: "finish", text: nil, code: nil, message: nil, finishReason: finishReason, inputTokens: inputTokens, outputTokens: outputTokens, truncated: truncated))
         }
     }
 

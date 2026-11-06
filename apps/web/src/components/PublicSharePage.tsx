@@ -26,7 +26,7 @@ import {
   type ShareBodyAccess,
   getMemoDisplayTitle,
 } from "@edgeever/shared";
-import { resolveSupportedLocale, type SupportedLocale } from "@edgeever/shared/i18n/locales";
+import { resolveSupportedLocale } from "@edgeever/shared/i18n/locales";
 import { activateHeadingAnchorClick } from "@/lib/editor-heading-anchor";
 import { applyEditorBodyFontPreference } from "@/lib/editor-body-font";
 import { createEdgeEverMathematics } from "@edgeever/shared/mathematics";
@@ -169,7 +169,7 @@ const SharedDocument = ({
   access,
   site = false,
 }: {
-  locale: SupportedLocale;
+  locale: "zh-CN" | "en-US" | "ja" | "pl" | "ru";
   share: PublicMemoShare;
   token: string;
   access?: ShareBodyAccess;

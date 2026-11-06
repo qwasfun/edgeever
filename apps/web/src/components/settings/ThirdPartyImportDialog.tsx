@@ -182,9 +182,23 @@ export const ThirdPartyImportDialog = ({ controller, state, onOpenMemo }: { cont
         if (!open) controller.dismiss();
       }}
     >
-      <DialogContent className="flex max-h-[90dvh] flex-col gap-5 overflow-hidden sm:max-w-xl">
+      <DialogContent className="flex max-h-[90dvh] flex-col gap-5 overflow-hidden sm:max-w-xl" aria-describedby="note-import-target">
         <DialogHeader className="space-y-2">
-          <DialogTitle className="px-8 text-lg font-semibold tracking-tight sm:pl-0">{t("noteImport.title")}</DialogTitle>
+          <div className="flex flex-wrap items-center justify-between gap-2.5">
+            <DialogTitle className="text-lg font-semibold tracking-tight">{t("noteImport.title")}</DialogTitle>
+            <div
+              id="note-import-target"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/40 px-2.5 py-0.5 text-xs text-muted-foreground"
+              title={`${controller.accountLabel} (${controller.target})`}
+            >
+              <span className="size-1.5 rounded-full bg-emerald-500" />
+              <span className="max-w-[160px] truncate font-medium text-foreground/80">{controller.accountLabel}</span>
+              <span className="text-muted-foreground/40">·</span>
+              <span className="max-w-[140px] truncate font-mono text-[11px] text-muted-foreground">
+                {controller.target.replace(/^https?:\/\//, "")}
+              </span>
+            </div>
+          </div>
           <DialogDescription className="text-xs text-muted-foreground leading-normal">
             {t("noteImport.description")}
           </DialogDescription>

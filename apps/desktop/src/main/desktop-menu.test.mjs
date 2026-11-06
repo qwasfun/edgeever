@@ -17,18 +17,14 @@ describe("desktop native menu localization", () => {
   });
 
   test("recognizes other Chinese locale variants", () => {
-    expect(desktopMenuCopy("zh-TW").newMemo).toBe("新建筆記");
+    expect(desktopMenuCopy("zh-TW").newMemo).toBe("新建笔记");
   });
 
   test("falls back to English for other or missing locales", () => {
     expect(desktopMenuCopy("en-US").file).toBe("File");
     expect(desktopMenuCopy(undefined).file).toBe("File");
-    expect(desktopMenuCopy("it-IT").file).toBe("File");
-    expect(screenshotRegionCopy("it-IT").cancel).toBe("Esc to cancel");
-    expect(desktopMenuCopy("de-DE").file).toBe("Datei");
-    expect(screenshotRegionCopy("de-DE").cancel).toBe("Esc zum Abbrechen");
-    expect(desktopMenuCopy("fr-FR").file).toBe("Fichier");
-    expect(screenshotRegionCopy("fr-FR").cancel).toBe("Échap pour annuler");
+    expect(desktopMenuCopy("de-DE").file).toBe("File");
+    expect(screenshotRegionCopy("de-DE").cancel).toBe("Esc to cancel");
   });
 
   test("resolves region overlay copy for every desktop locale", () => {
